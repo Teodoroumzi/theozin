@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="imagens" href="imagens/favicon.png">
+  <title>Para você 💙</title>
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Trebuchet MS', sans-serif;
+      background-color: #0b0c2a;
+      color: #f1f1f1;
+      overflow: hidden;
+    }
+
+    .container,
+    .conteudo-romantico {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: url('imagens/fundo-personalizado.jpg') center center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    #botao-costurado {
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 2;
+      width: 120px;
+      height: 120px;
+      animation: flutuar 2s ease-in-out infinite;
+      position: relative;
+    }
+
+    #botao-costurado img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .texto-abaixo-botao {
+      margin-top: 10px;
+      font-size: 1em;
+      color: #ffdd99;
+      animation: flutuar 2s ease-in-out infinite;
+    }
+
+    @keyframes flutuar {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .conteudo-romantico {
+      display: none;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      animation: aparecer 1s ease forwards;
+    }
+
+    @keyframes aparecer {
+      from {
+        opacity: 0;
+        transform: scale(0.9);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .frase {
+      font-size: 1.5em;
+      color: #ffdd99;
+      margin-bottom: 20px;
+    }
+
+    .frase-abaixo-video {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #ffccaa;
+    }
+
+    video {
+      width: 90%;
+      max-width: 600px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #000;
+      opacity: 0;
+      transform: scale(0.95);
+      animation: abrirVideo 1s ease forwards;
+      animation-delay: 0.2s;
+    }
+
+    @keyframes abrirVideo {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .audio-player {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      z-index: 10;
+      background-color: rgba(0, 0, 0, 0.3);
+      border-radius: 50%;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .audio-player button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .audio-player audio {
+      display: none;
+    }
+
+    .explosao-tela {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 150px;
+      height: 150px;
+      margin-left: -75px;
+      margin-top: -75px;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .explosao-tela span {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: yellow;
+      border-radius: 50%;
+      animation: explodir-botao 0.8s ease-out forwards;
+    }
+
+    @keyframes explodir-botao {
+      from {
+        transform: translate(0, 0);
+        opacity: 1;
+      }
+
+      to {
+        transform: translate(var(--x), var(--y));
+        opacity: 0;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .frase {
+        font-size: 1.2em;
+      }
+
+      .frase-abaixo-video {
+        font-size: 1em;
+      }
+
+      video {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container" id="inicio">
+    <button id="botao-costurado">
+      <img src="imagens/botao-costurado.png" alt="Botão Costurado">
+    </button>
+    <div class="texto-abaixo-botao">❤️</div>
+  </div>
+
+  <div class="conteudo-romantico" id="conteudo">
+    <div class="frase">Feliz aniversário linduxa, eu te amo em todos os infinitos! 🌌</div>
+    <video id="video" src="videos/video-romantico.mp4" autoplay muted loop playsinline></video>
+    <div class="frase-abaixo-video">Te amo pra todo sempre e obrigado por ser essa pessoa incrivel pra mim. Com amor e do seu amor, theo. 💖</div>
+    <div class="audio-player">
+      <button id="playPauseBtn">⏸️</button>
+      <audio id="musica" src="musicas/musica.mp3" autoplay></audio>
+    </div>
+    <div class="explosao-tela" id="explosaoTela"></div>
+  </div>
+
+  <script>
+    const botao = document.getElementById('botao-costurado');
+    const inicio = document.getElementById('inicio');
+    const conteudo = document.getElementById('conteudo');
+    const musica = document.getElementById('musica');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const explosaoTela = document.getElementById('explosaoTela');
+
+    botao.addEventListener('click', () => {
+      setTimeout(() => {
+        inicio.style.display = 'none';
+        conteudo.style.display = 'flex';
+        musica.play();
+        explodirTela();
+      }, 200);
+    });
+
+    function explodirTela() {
+      for (let i = 0; i < 80; i++) {
+        const p = document.createElement('span');
+        const angle = Math.random() * 2 * Math.PI;
+        const distance = Math.random() * 300 + 100;
+        p.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
+        p.style.setProperty('--y', `${Math.sin(angle) * distance}px`);
+        p.style.background = `hsl(${Math.random() * 360}, 100%, 70%)`;
+        explosaoTela.appendChild(p);
+        setTimeout(() => p.remove(), 1000);
+      }
+    }
+
+    playPauseBtn.addEventListener('click', () => {
+      if (musica.paused) {
+        musica.play();
+        playPauseBtn.textContent = '⏸️';
+      } else {
+        musica.pause();
+        playPauseBtn.textContent = '▶️';
+      }
+    });
+  </script>
+</body>
+
+</html>
