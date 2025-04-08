@@ -207,7 +207,7 @@
     <div class="frase-abaixo-video">Te amo pra todo sempre e obrigado por ser essa pessoa incrivel pra mim. Com amor e do seu amor, theo. 💖</div>
     <div class="audio-player">
       <button id="playPauseBtn">⏸️</button>
-      <audio id="musica" src="musicas/musica.mp3" autoplay></audio>
+      <audio id="musica" src="musicas/musica.mp3"></audio>
     </div>
     <div class="explosao-tela" id="explosaoTela"></div>
   </div>
@@ -224,7 +224,13 @@
       setTimeout(() => {
         inicio.style.display = 'none';
         conteudo.style.display = 'flex';
-        musica.play();
+
+        musica.play().then(() => {
+          console.log("Música tocando com sucesso!");
+        }).catch(err => {
+          console.log("Erro ao tentar tocar música:", err);
+        });
+
         explodirTela();
       }, 200);
     });
@@ -244,8 +250,11 @@
 
     playPauseBtn.addEventListener('click', () => {
       if (musica.paused) {
-        musica.play();
-        playPauseBtn.textContent = '⏸️';
+        musica.play().then(() => {
+          playPauseBtn.textContent = '⏸️';
+        }).catch(err => {
+          console.log('Erro ao tentar dar play:', err);
+        });
       } else {
         musica.pause();
         playPauseBtn.textContent = '▶️';
